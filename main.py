@@ -1,7 +1,11 @@
 import pygame
 from Minigame import Minigame
 from Menu import Menu
-from Minigames.Dennis.Game import SuperSnake
+from Minigames.Dennis.Game import DennisGame
+from Minigames.Gavin.Game import GavinGame
+from Minigames.Jasper.Game import JasperGame
+from Minigames.Ties.Game import TiesGame
+from Minigames.Vincent.Game import VincentGame
 
 class Game(object):
     def __init__(self):
@@ -14,7 +18,11 @@ class Game(object):
         self.keepRunning = True
         self.currentMinigame = None
         self.minigames = [
-            SuperSnake()
+            DennisGame(),
+            GavinGame(),
+            JasperGame(),
+            TiesGame(),
+            VincentGame()
         ]
         self.menu = Menu(self.minigames)
 

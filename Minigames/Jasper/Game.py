@@ -1,8 +1,8 @@
 from Minigame import Minigame
 
-class DennisGame(Minigame):
+class JasperGame(Minigame):
     def __init__(self):
-        super(DennisGame, self).__init__("SuperSnake", "Dennis")
+        super(JasperGame, self).__init__("JasperGame", "Jasper")
     def update(self):
         pass
     def draw(self, surface):
