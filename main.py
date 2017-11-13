@@ -3,44 +3,45 @@ from Minigame import Minigame
 from Menu import Menu
 from Minigames.Dennis.Game import SuperSnake
 
-pygame.init()
+class Game(object):
+    def __init__(self):
+        pygame.init()
 
-# PyGame Setup
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("HR MiniGames Groep 5")
-surface = pygame.display.get_surface()
-keepRunning = True
-currentMinigame = None
+        # PyGame Setup
+        self.screen = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("HR MiniGames Groep 5")
+        self.surface = pygame.display.get_surface()
+        self.keepRunning = True
+        self.currentMinigame = None
+        self.minigames = [
+            SuperSnake()
+        ]
+        self.menu = Menu(self.minigames)
 
-# Our Minigames
-minigames = [
-    SuperSnake()
-]
+    def handleEvents(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.keepRunning = False
 
-menu = Menu(minigames)
+    def update(self):
+        if (self.currentMinigame is None):
+            # Update Menu
+            self.menu.update()
+        else:
+            self.currentMinigame.update()
+    def draw(self):
+        if (self.currentMinigame is None):
+            # Draw Menu
+            self.menu.draw(self.surface)
+        else:
+            self.minigame.draw(self.surface)
+    def run(self):
+        while self.keepRunning:
+            self.handleEvents()
+            self.update()
+            self.draw()
+            pygame.display.update()
 
-def handleEvents():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            keepRunning = False
-
-def update():
-    if (currentMinigame is None):
-        # Update Menu
-        menu.update()
-    else:
-        currentMinigame.update()
-def draw():
-    if (currentMinigame is None):
-        # Draw Menu
-        menu.draw(surface)
-    else:
-        minigame.draw(surface)
-
-while keepRunning:
-    handleEvents()
-    update()
-    draw()
-    pygame.display.update()
-
+game = Game()
+game.run()
 pygame.quit()
