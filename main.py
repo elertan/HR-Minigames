@@ -1,5 +1,6 @@
 import pygame
 from Minigame import Minigame
+from Menu import Menu
 from Minigames.Dennis.Game import SuperSnake
 
 pygame.init()
@@ -16,6 +17,8 @@ minigames = [
     SuperSnake()
 ]
 
+menu = Menu(minigames)
+
 def handleEvents():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -24,17 +27,20 @@ def handleEvents():
 def update():
     if (currentMinigame is None):
         # Update Menu
+        menu.update()
     else:
         currentMinigame.update()
 def draw():
     if (currentMinigame is None):
         # Draw Menu
+        menu.draw(surface)
     else:
-        
         minigame.draw(surface)
-    pygame.display.update()
 
 while keepRunning:
     handleEvents()
     update()
     draw()
+    pygame.display.update()
+
+pygame.quit()
