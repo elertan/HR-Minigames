@@ -37,7 +37,6 @@ class Game(object):
             self.currentMinigame.handleEvents(events)
 
     def update(self, dt):
-        print(dt)
         if (self.currentMinigame is None):
             # Update Menu
             self.menu.update(dt)
