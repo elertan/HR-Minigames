@@ -24,7 +24,7 @@ class Menu(object):
             self.minigameArcadeMachineImages.append(pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-" + str(i + 1) + ".png"))
         self.minigameArcadeMachineGlowImage = pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-glow.png")
 
-        self.gameSelectedIndex = 1
+        self.gameSelectedIndex = 0
 
     def handleEvents(self, events):
         pass
@@ -46,6 +46,8 @@ class Menu(object):
             Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
             #pygame.transform.scale(s, (100, 250), s)
             s.blit(self.minigameArcadeMachineImages[i], (15 + 5 * i, 0))
+            if self.gameSelectedIndex == i:
+                s.blit(self.minigameArcadeMachineGlowImage, (-15 -5 * i, -30))
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties and Vincent", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
