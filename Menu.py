@@ -40,16 +40,12 @@ class Menu(object):
         surface.blit(text, (10, 10))
 
         # Render arcade machines
-        for i in range(0, 3):
-            s = surface.subsurface((175 * i, 35, Menu.IMAGE_ARCADE_MACHINE_WIDTH, Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
+        for i in range(0, 6):
+            s = surface.subsurface((124 * i, 350, 
+            Menu.IMAGE_ARCADE_MACHINE_WIDTH, 
+            Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
             #pygame.transform.scale(s, (100, 250), s)
-            s.blit(self.minigameArcadeMachineImages[i], (0,0))
-            
-        for i in range(0, 3):
-            s = surface.subsurface((175 * i, 35 + Menu.IMAGE_ARCADE_MACHINE_HEIGHT, Menu.IMAGE_ARCADE_MACHINE_WIDTH, Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
-            #pygame.transform.scale(s, (100, 250), s)
-            s.blit(self.minigameArcadeMachineImages[i + 3], (0,0))
-
+            s.blit(self.minigameArcadeMachineImages[i], (15 + 5 * i, 0))
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties and Vincent", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
