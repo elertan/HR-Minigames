@@ -10,7 +10,7 @@ from Minigames.Vincent.Game import VincentGame
 class Game(object):
     def __init__(self):
         pygame.init()
-
+        self.clock = pygame.time.Clock()
         # PyGame Setup
         self.screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Minigame Masters")
@@ -37,6 +37,7 @@ class Game(object):
             self.currentMinigame.handleEvents(events)
 
     def update(self, dt):
+        print(dt)
         if (self.currentMinigame is None):
             # Update Menu
             self.menu.update(dt)
@@ -49,11 +50,19 @@ class Game(object):
         else:
             self.minigame.draw(self.surface)
     def run(self):
+        getTicksLastFrame = 0
+        deltaTime = 16
         while self.keepRunning:
+            t = pygame.time.get_ticks()
+
             self.handleEvents()
-            self.update(16)
+            self.update(deltaTime)
             self.draw()
             pygame.display.update()
+
+            # deltaTime in seconds.
+            deltaTime = (t - getTicksLastFrame) / 1000.0
+            getTicksLastFrame = t
 
 game = Game()
 game.run()
