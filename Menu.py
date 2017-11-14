@@ -2,6 +2,9 @@ import os
 import pygame
 
 class Menu(object):
+    IMAGE_ARCADE_MACHINE_WIDTH = 160
+    IMAGE_ARCADE_MACHINE_HEIGHT = 250
+
     def __init__(self, minigames):
         self.headerColor = (255,255,255)
         self.footerColor = (255,255,255)
@@ -37,11 +40,15 @@ class Menu(object):
         surface.blit(text, (10, 10))
 
         # Render arcade machines
-        for i in range(0, 6):
-            s = surface.subsurface((5 + 115 * i, 235, 205, 352))
+        for i in range(0, 3):
+            s = surface.subsurface((175 * i, 35, Menu.IMAGE_ARCADE_MACHINE_WIDTH, Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
             #pygame.transform.scale(s, (100, 250), s)
-            s.blit(self.minigameArcadeMachineImages[i], (10, 10))
+            s.blit(self.minigameArcadeMachineImages[i], (0,0))
             
+        for i in range(0, 3):
+            s = surface.subsurface((175 * i, 35 + Menu.IMAGE_ARCADE_MACHINE_HEIGHT, Menu.IMAGE_ARCADE_MACHINE_WIDTH, Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
+            #pygame.transform.scale(s, (100, 250), s)
+            s.blit(self.minigameArcadeMachineImages[i + 3], (0,0))
 
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties and Vincent", True, self.footerColor)
