@@ -9,6 +9,7 @@ class Menu(object):
         self.minigameTextActiveColor = (255,0,0)
 
         dirname = os.path.dirname(os.path.realpath(__file__))
+        self.backgroundImage = pygame.image.load("Shared/Images/menu/background.jpg")
         self.headerFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 21)
         self.mainFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 20)
         self.minigameFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 18)
@@ -20,30 +21,31 @@ class Menu(object):
         self.gameSelectedIndex = 1
 
     def drawMainSection(self, surface):
-        pygame.draw.rect(
-            surface, 
-            (150, 150, 150), 
-            (self.menuOffset,
-            self.menuOffset, 
-            surface.get_width() - self.menuOffset * 2,
-            surface.get_height() - self.menuOffset * 2)
-        )
+        pass
+        # pygame.draw.rect(
+        #     surface, 
+        #     (150, 150, 150), 
+        #     (self.menuOffset,
+        #     self.menuOffset, 
+        #     surface.get_width() - self.menuOffset * 2,
+        #     surface.get_height() - self.menuOffset * 2)
+        # )
 
-        text = self.mainFont.render("Select a minigame to start!", True, (0, 0, 0))
-        surface.blit(text, (self.menuOffset + 10, self.menuOffset + 10))
+        # text = self.mainFont.render("Select a minigame to start!", True, (0, 0, 0))
+        # surface.blit(text, (self.menuOffset + 10, self.menuOffset + 10))
 
-        x = 1
-        for minigame in self.minigames:
-            content = minigame.name + " by " + minigame.author
-            color = None
-            if self.gameSelectedIndex == x:
-                content = "> " + content
-                color = self.minigameTextActiveColor
-            else:
-                color = self.minigameTextColor
-            text = self.minigameFont.render(content, True, color)
-            surface.blit(text, (self.menuOffset + 30, self.menuOffset + 20 + 30 * x))
-            x += 1
+        # x = 1
+        # for minigame in self.minigames:
+        #     content = minigame.name + " by " + minigame.author
+        #     color = None
+        #     if self.gameSelectedIndex == x:
+        #         content = "> " + content
+        #         color = self.minigameTextActiveColor
+        #     else:
+        #         color = self.minigameTextColor
+        #     text = self.minigameFont.render(content, True, color)
+        #     surface.blit(text, (self.menuOffset + 30, self.menuOffset + 20 + 30 * x))
+        #     x += 1
 
     def handleEvents(self, events):
         pass
@@ -52,6 +54,8 @@ class Menu(object):
         pass
 
     def draw(self, surface):
+        surface.blit(self.backgroundImage, (0, 0))
+
         # Header Text
         text = self.headerFont.render("Minigame Masters", True, self.headerColor)
         surface.blit(text, (10, 10))
