@@ -5,7 +5,7 @@ class Minigame(object):
         self.name = name
         self.author = author
 
-    def update(self):
+    def update(self, events):
         raise NotImplementedError("You need to override the update method on your minigame.")
 
     def draw(self, surface):

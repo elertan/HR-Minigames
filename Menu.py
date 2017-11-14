@@ -45,12 +45,12 @@ class Menu(object):
             surface.blit(text, (self.menuOffset + 30, self.menuOffset + 20 + 30 * x))
             x += 1
 
-    def update(self):
+    def update(self, events):
         pass
 
     def draw(self, surface):
         # Header Text
-        text = self.headerFont.render("Groep 5: Minigames", True, self.headerColor)
+        text = self.headerFont.render("Minigame Masters", True, self.headerColor)
         surface.blit(text, (10, 10))
 
         # Main Section

@@ -13,7 +13,7 @@ class Game(object):
 
         # PyGame Setup
         self.screen = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption("HR MiniGames Groep 5")
+        pygame.display.set_caption("Minigame Masters")
         self.surface = pygame.display.get_surface()
         self.keepRunning = True
         self.currentMinigame = None
@@ -26,17 +26,20 @@ class Game(object):
         ]
         self.menu = Menu(self.minigames)
 
-    def handleEvents(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.keepRunning = False
+    # def handleEvents(self):
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             self.keepRunning = False
 
     def update(self):
+        events = []
+        for event in pygame.event.get():
+            events.append(event)
         if (self.currentMinigame is None):
             # Update Menu
-            self.menu.update()
+            self.menu.update(events)
         else:
-            self.currentMinigame.update()
+            self.currentMinigame.update(events)
     def draw(self):
         if (self.currentMinigame is None):
             # Draw Menu
@@ -45,7 +48,7 @@ class Game(object):
             self.minigame.draw(self.surface)
     def run(self):
         while self.keepRunning:
-            self.handleEvents()
+            # self.handleEvents()
             self.update()
             self.draw()
             pygame.display.update()
