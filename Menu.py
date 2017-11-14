@@ -25,7 +25,11 @@ class Menu(object):
         self.minigameArcadeMachineGlowImage = pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-glow.png")
         self.minigameArcadeMachineActiveArrow = pygame.image.load(dirname + "/Shared/Images/menu/arrow.png")
 
-        self.gameSelectedIndex = 1
+        self.arrowAnimationIncreasing = True
+        self.arrowAnimationCurrent = 0
+        self.arrowAnimationMax = 25
+        self.arrowAnimationSpeed = 25
+        self.gameSelectedIndex = 0
 
     def handleEvents(self, events):
         for ev in events:
@@ -43,7 +47,17 @@ class Menu(object):
                         self.gameSelectedIndex += 1
 
     def update(self, dt):
-        pass
+        animationDelta = self.arrowAnimationSpeed * dt
+        if self.arrowAnimationIncreasing:
+            self.arrowAnimationCurrent += animationDelta
+            if self.arrowAnimationCurrent > self.arrowAnimationMax:
+                self.arrowAnimationIncreasing = False
+                self.arrowAnimationCurrent = self.arrowAnimationMax
+        else:
+            self.arrowAnimationCurrent -= animationDelta
+            if self.arrowAnimationCurrent < 0:
+                self.arrowAnimationIncreasing = True
+                self.arrowAnimationCurrent = 0
 
     def draw(self, surface):
         surface.blit(self.backgroundImage, (0, 0))
@@ -53,6 +67,8 @@ class Menu(object):
         surface.blit(text, (10, 10))
 
         # Help Text
+        text = self.mainFont.render("Use the arrow/enter key(s)", True, self.headerColor)
+        surface.blit(text, (260, 230))
 
         # Render arcade machines
         for i in range(0, 6):
@@ -66,7 +82,8 @@ class Menu(object):
                 s = surface.subsurface((124 * i, 250,
                     Menu.IMAGE_ARCADE_MACHINE_WIDTH,
                     Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
-                s.blit(self.minigameArcadeMachineActiveArrow, (40 + 5 * i, 0))
+                print(self.arrowAnimationCurrent)
+                s.blit(self.minigameArcadeMachineActiveArrow, (50 + 5 * i, self.arrowAnimationCurrent))
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties and Vincent", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
