@@ -45,7 +45,10 @@ class Menu(object):
             surface.blit(text, (self.menuOffset + 30, self.menuOffset + 20 + 30 * x))
             x += 1
 
-    def update(self, events):
+    def handleEvents(self, events):
+        pass
+
+    def update(self, dt):
         pass
 
     def draw(self, surface):
