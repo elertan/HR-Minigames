@@ -40,11 +40,16 @@ class Menu(object):
 
         self.curtainAnimationIsPlaying = False
         self.curtainAnimationIncreasing = True
-        self.curtainAnimationSpeed = 40
+        self.curtainAnimationSpeed = 750
+        self.curtainAnimationMiddleTimeoutDelayCurrent = 0
+        self.curtainAnimationMiddleTimeoutDelay = 0.6
+        self.curtainAnimationCurrent = 0
 
     def handleEvents(self, events):
         if (self.gamePlayer != None):
             self.gamePlayer.handleEvents(events)
+            return
+        if (self.curtainAnimationIsPlaying):
             return
         for ev in events:
             if ev.type == pygame.KEYDOWN:
@@ -59,8 +64,7 @@ class Menu(object):
                     else:
                         self.gameSelectedIndex += 1
                 elif ev.key == pygame.K_RETURN:
-                    
-
+                    self.curtainAnimationIsPlaying = True
     def update(self, dt):
         if (self.gamePlayer != None):
             self.gamePlayer.update(dt)
@@ -81,8 +85,25 @@ class Menu(object):
         for minigame in self.minigames:
             minigame.updateMiniPreview(dt)
 
+        if self.curtainAnimationIsPlaying:
+            if self.curtainAnimationIncreasing:
+                self.curtainAnimationCurrent += self.curtainAnimationSpeed * dt
+                if self.curtainAnimationCurrent > 400:
+                    self.curtainAnimationIncreasing = False
+                    self.curtainAnimationCurrent = 400
+            else:
+                if self.curtainAnimationMiddleTimeoutDelayCurrent < self.curtainAnimationMiddleTimeoutDelay:
+                    self.curtainAnimationMiddleTimeoutDelayCurrent += dt
+                else:
+                    self.curtainAnimationCurrent -= self.curtainAnimationSpeed * dt
+                    if self.curtainAnimationCurrent < 0:
+                        self.curtainAnimationMiddleTimeoutDelayCurrent = 0
+                        self.curtainAnimationIncreasing = True
+                        self.curtainAnimationIsPlaying = False
+                        self.curtainAnimationCurrent = 0
+
     def draw(self, surface):
-        if (self.gamePlayer != None and not self.curtainAnimationIsPlaying):
+        if (self.gamePlayer != None):
             self.gamePlayer.draw(surface)
             return
 
@@ -123,3 +144,7 @@ class Menu(object):
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties, Vincent and Quinten", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
+
+        if (self.curtainAnimationIsPlaying):
+            pygame.draw.rect(surface, (0,0,0), (0,0,self.curtainAnimationCurrent,surface.get_height()))
+            pygame.draw.rect(surface, (0,0,0), (surface.get_width() - self.curtainAnimationCurrent, 0, self.curtainAnimationCurrent,surface.get_height()))
