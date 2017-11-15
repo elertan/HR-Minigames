@@ -1,5 +1,6 @@
 import os
 import pygame
+from random import randint
 
 class Menu(object):
     IMAGE_ARCADE_MACHINE_WIDTH = 160
@@ -18,7 +19,7 @@ class Menu(object):
         self.minigameFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 18)
         self.footerFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 16)
 
-        pygame.mixer.music.load(dirname + "/Shared/Music/menu/music.ogg")
+        pygame.mixer.music.load(dirname + "/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg")
         pygame.mixer.music.play(-1)
 
         self.minigames = minigames
@@ -100,5 +101,5 @@ class Menu(object):
 
 
         # Footer Text
-        text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties and Vincent", True, self.footerColor)
+        text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties, Vincent and Quinten", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
