@@ -31,8 +31,8 @@ class Menu(object):
 
         self.arrowAnimationIncreasing = True
         self.arrowAnimationCurrent = 0
-        self.arrowAnimationMax = 25
-        self.arrowAnimationSpeed = 25
+        self.arrowAnimationMax = 15
+        self.arrowAnimationSpeed = 15
         self.gameSelectedIndex = 0
 
     def handleEvents(self, events):
@@ -48,6 +48,8 @@ class Menu(object):
                         self.gameSelectedIndex = 0
                     else:
                         self.gameSelectedIndex += 1
+                elif ev.key == pygame.K_KP_ENTER:
+                    print("nigg")
 
     def update(self, dt):
         animationDelta = self.arrowAnimationSpeed * dt
