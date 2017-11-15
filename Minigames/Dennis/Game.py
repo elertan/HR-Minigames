@@ -1,8 +1,13 @@
 from Minigame import Minigame
+import pygame
+import os
 
 class DennisGame(Minigame):
     def __init__(self):
         super(DennisGame, self).__init__("SuperSnake", "Dennis")
+        dirname = os.path.dirname(os.path.realpath(__file__))
+
+        self.miniPreviewMainFont = pygame.font.Font(dirname + "/../../Shared/Fonts/SanFrancisco.otf", 11)
     
     # When a player starts this minigame
     def enter(self):
@@ -23,9 +28,29 @@ class DennisGame(Minigame):
     def updatePreview(self, dt):
         raise NotImplementedError("You need to override the updatePreview method on your minigame.")
 
+    def updateMiniPreview(self, dt):
+        pass
+
     # Draw the current game state
     def draw(self, surface):
         raise NotImplementedError("You need to override the draw method on your minigame.")
 
     def drawPreview(self, surface):
         raise NotImplementedError("You need to override the drawPreview method on your minigame.")
+
+    def drawMiniPreview(self, surface):
+        text = self.miniPreviewMainFont.render("SuperSnake", True, (255,255,255))
+        surface.blit(text, (9, 5))
+
+        # text = self.miniPreviewMainFont.render("-----------", True, (255,255,255))
+        # surface.blit(text, (11, 11))
+
+        x = 10
+        y = 25
+        height = 4
+        width = 4
+
+        for i in range(0, 6):
+            pygame.draw.rect(surface, (0, 200, 0), (x + width * i, y, width - 1, height))
+        
+        pygame.draw.rect(surface, (230, 230, 230), (x + width * 10, y, width - 1, height))

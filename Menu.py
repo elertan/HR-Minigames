@@ -75,6 +75,7 @@ class Menu(object):
             previewSurface = surface.subsurface((40 + 129 * i, 410,
                                 Menu.IMAGE_ARCADE_MACHINE_WIDTH - 86,
                                 Menu.IMAGE_ARCADE_MACHINE_HEIGHT - 202))
+            pygame.draw.rect(previewSurface, (0, 0, 0), (0, 0, previewSurface.get_width(), previewSurface.get_height()))
             self.minigames[i].drawMiniPreview(previewSurface)
 
             s = surface.subsurface((124 * i, 350, 
