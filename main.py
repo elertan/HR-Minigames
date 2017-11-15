@@ -6,6 +6,7 @@ from Minigames.Gavin.Game import GavinGame
 from Minigames.Jasper.Game import JasperGame
 from Minigames.Ties.Game import TiesGame
 from Minigames.Vincent.Game import VincentGame
+from Minigames.Quinten.Game import QuintenGame
 
 class Game(object):
     def __init__(self):
@@ -22,7 +23,8 @@ class Game(object):
             GavinGame(),
             JasperGame(),
             TiesGame(),
-            VincentGame()
+            VincentGame(),
+            QuintenGame()
         ]
         self.menu = Menu(self.minigames)
 

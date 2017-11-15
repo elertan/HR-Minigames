@@ -33,15 +33,14 @@ class Menu(object):
 
     def handleEvents(self, events):
         for ev in events:
-            print(ev)
             if ev.type == pygame.KEYDOWN:
                 if ev.key == pygame.K_LEFT:
                     if self.gameSelectedIndex == 0:
-                        self.gameSelectedIndex = len(self.minigames)
+                        self.gameSelectedIndex = len(self.minigames) - 1
                     else:
                         self.gameSelectedIndex -= 1
                 elif ev.key == pygame.K_RIGHT:
-                    if self.gameSelectedIndex == len(self.minigames):
+                    if self.gameSelectedIndex == len(self.minigames) - 1:
                         self.gameSelectedIndex = 0
                     else:
                         self.gameSelectedIndex += 1
@@ -72,18 +71,27 @@ class Menu(object):
 
         # Render arcade machines
         for i in range(0, 6):
+            # Draw small preview
+            previewSurface = surface.subsurface((40 + 129 * i, 410,
+                                Menu.IMAGE_ARCADE_MACHINE_WIDTH - 86,
+                                Menu.IMAGE_ARCADE_MACHINE_HEIGHT - 202))
+            self.minigames[i].drawMiniPreview(previewSurface)
+
             s = surface.subsurface((124 * i, 350, 
             Menu.IMAGE_ARCADE_MACHINE_WIDTH, 
             Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
             #pygame.transform.scale(s, (100, 250), s)
             s.blit(self.minigameArcadeMachineImages[i], (15 + 5 * i, 0))
+
+            # Is Hovered game?
             if self.gameSelectedIndex == i:
                 s.blit(self.minigameArcadeMachineGlowImage, (-15 + (5 * i), -30))
                 s = surface.subsurface((124 * i, 250,
                     Menu.IMAGE_ARCADE_MACHINE_WIDTH,
                     Menu.IMAGE_ARCADE_MACHINE_HEIGHT))
-                print(self.arrowAnimationCurrent)
                 s.blit(self.minigameArcadeMachineActiveArrow, (50 + 5 * i, self.arrowAnimationCurrent))
+
+
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties and Vincent", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
