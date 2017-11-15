@@ -18,6 +18,9 @@ class Menu(object):
         self.minigameFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 18)
         self.footerFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 16)
 
+        pygame.mixer.music.load(dirname + "/Shared/Music/menu/music.ogg")
+        pygame.mixer.music.play(-1)
+
         self.minigames = minigames
         self.minigameArcadeMachineImages = []
         for i in range(0, 6):
