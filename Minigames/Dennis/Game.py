@@ -21,11 +21,11 @@ class DennisGame(Minigame):
         raise NotImplementedError("You need to override the leave method on your minigame.")
 
     def handleEvents(self, events):
-        raise NotImplementedError("You need to override the handleEvents method on your minigame.")
+        pass
 
     # Gets called on every frame
     def update(self, dt):
-        raise NotImplementedError("You need to override the update method on your minigame.")
+        pass
 
     # Gets called on every frame
     def updatePreview(self, dt):
@@ -42,7 +42,7 @@ class DennisGame(Minigame):
 
     # Draw the current game state
     def draw(self, surface):
-        raise NotImplementedError("You need to override the draw method on your minigame.")
+        pass
 
     def drawPreview(self, surface):
         raise NotImplementedError("You need to override the drawPreview method on your minigame.")

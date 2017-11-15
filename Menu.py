@@ -1,7 +1,7 @@
 import os
 import pygame
 from random import randint
-import GamePlayer
+from GamePlayer import GamePlayer
 
 class Menu(object):
     IMAGE_ARCADE_MACHINE_WIDTH = 160
@@ -66,6 +66,25 @@ class Menu(object):
                 elif ev.key == pygame.K_RETURN:
                     self.curtainAnimationIsPlaying = True
     def update(self, dt):
+        if self.curtainAnimationIsPlaying:
+            if self.curtainAnimationIncreasing:
+                self.curtainAnimationCurrent += self.curtainAnimationSpeed * dt
+                if self.curtainAnimationCurrent > 400:
+                    self.curtainAnimationIncreasing = False
+                    self.curtainAnimationCurrent = 400
+            else:
+                if self.gamePlayer is None:
+                    self.gamePlayer = GamePlayer(self.minigames[self.gameSelectedIndex])
+                if self.curtainAnimationMiddleTimeoutDelayCurrent < self.curtainAnimationMiddleTimeoutDelay:
+                    self.curtainAnimationMiddleTimeoutDelayCurrent += dt
+                else:
+                    self.curtainAnimationCurrent -= self.curtainAnimationSpeed * dt
+                    if self.curtainAnimationCurrent < 0:
+                        self.curtainAnimationMiddleTimeoutDelayCurrent = 0
+                        self.curtainAnimationIncreasing = True
+                        self.curtainAnimationIsPlaying = False
+                        self.curtainAnimationCurrent = 0
+
         if (self.gamePlayer != None):
             self.gamePlayer.update(dt)
             return
@@ -85,22 +104,6 @@ class Menu(object):
         for minigame in self.minigames:
             minigame.updateMiniPreview(dt)
 
-        if self.curtainAnimationIsPlaying:
-            if self.curtainAnimationIncreasing:
-                self.curtainAnimationCurrent += self.curtainAnimationSpeed * dt
-                if self.curtainAnimationCurrent > 400:
-                    self.curtainAnimationIncreasing = False
-                    self.curtainAnimationCurrent = 400
-            else:
-                if self.curtainAnimationMiddleTimeoutDelayCurrent < self.curtainAnimationMiddleTimeoutDelay:
-                    self.curtainAnimationMiddleTimeoutDelayCurrent += dt
-                else:
-                    self.curtainAnimationCurrent -= self.curtainAnimationSpeed * dt
-                    if self.curtainAnimationCurrent < 0:
-                        self.curtainAnimationMiddleTimeoutDelayCurrent = 0
-                        self.curtainAnimationIncreasing = True
-                        self.curtainAnimationIsPlaying = False
-                        self.curtainAnimationCurrent = 0
 
     def draw(self, surface):
         if (self.gamePlayer != None):

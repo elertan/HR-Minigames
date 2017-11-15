@@ -3,14 +3,15 @@ import pygame
 from random import randint
 
 class GamePlayer(object):
-    IMAGE_ARCADE_MACHINE_WIDTH = 160
-    IMAGE_ARCADE_MACHINE_HEIGHT = 250
-
     def __init__(self, minigame):
-        pass
+        self.minigame = minigame
     def handleEvents(self, events):
-        pass
+        for ev in events:
+            pass
+        self.minigame.handleEvents(events)
     def update(self, dt):
-        pass
+        self.minigame.update(dt)
     def draw(self, surface):
-        pass
+        s = surface.subsurface((20, 20, surface.get_width() - 40, surface.get_height() - 40))
+        pygame.draw.rect(s, (0, 255, 0), (0,0,500,500))
+        self.minigame.draw(s)
