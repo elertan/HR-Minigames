@@ -58,6 +58,9 @@ class Menu(object):
                 self.arrowAnimationIncreasing = True
                 self.arrowAnimationCurrent = 0
 
+        for minigame in self.minigames:
+            minigame.updateMiniPreview(dt)
+
     def draw(self, surface):
         surface.blit(self.backgroundImage, (0, 0))
 

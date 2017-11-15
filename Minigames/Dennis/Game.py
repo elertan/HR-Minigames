@@ -8,6 +8,9 @@ class DennisGame(Minigame):
         dirname = os.path.dirname(os.path.realpath(__file__))
 
         self.miniPreviewMainFont = pygame.font.Font(dirname + "/../../Shared/Fonts/SanFrancisco.otf", 11)
+        self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
+        self.miniPreviewSnakeOffsetIncrementDelay = 1
+        self.miniPreviewSnakeOffset = 0
     
     # When a player starts this minigame
     def enter(self):
@@ -29,7 +32,13 @@ class DennisGame(Minigame):
         raise NotImplementedError("You need to override the updatePreview method on your minigame.")
 
     def updateMiniPreview(self, dt):
-        pass
+        self.miniPreviewSnakeOffsetIncrementDelayCurrent += dt
+        if self.miniPreviewSnakeOffsetIncrementDelayCurrent > self.miniPreviewSnakeOffsetIncrementDelay:
+            self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
+            self.miniPreviewSnakeOffset += 1
+        
+        if self.miniPreviewSnakeOffset > 8:
+            self.miniPreviewSnakeOffset = 0
 
     # Draw the current game state
     def draw(self, surface):
@@ -45,12 +54,12 @@ class DennisGame(Minigame):
         # text = self.miniPreviewMainFont.render("-----------", True, (255,255,255))
         # surface.blit(text, (11, 11))
 
-        x = 10
+        x = 0
         y = 25
         height = 4
         width = 4
 
-        for i in range(0, 6):
-            pygame.draw.rect(surface, (0, 200, 0), (x + width * i, y, width - 1, height))
-        
         pygame.draw.rect(surface, (230, 230, 230), (x + width * 10, y, width - 1, height))
+
+        for i in range(0, 6):
+            pygame.draw.rect(surface, (0, 200, 0), (width * (i + self.miniPreviewSnakeOffset), y, width - 1, height))
