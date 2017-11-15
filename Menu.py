@@ -1,6 +1,7 @@
 import os
 import pygame
 from random import randint
+import GamePlayer
 
 class Menu(object):
     IMAGE_ARCADE_MACHINE_WIDTH = 160
@@ -23,6 +24,8 @@ class Menu(object):
         pygame.mixer.music.play(-1)
 
         self.minigames = minigames
+        self.gamePlayer = None
+
         self.minigameArcadeMachineImages = []
         for i in range(0, 6):
             self.minigameArcadeMachineImages.append(pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-" + str(i + 1) + ".png"))
@@ -35,7 +38,14 @@ class Menu(object):
         self.arrowAnimationSpeed = 15
         self.gameSelectedIndex = 0
 
+        self.curtainAnimationIsPlaying = False
+        self.curtainAnimationIncreasing = True
+        self.curtainAnimationSpeed = 40
+
     def handleEvents(self, events):
+        if (self.gamePlayer != None):
+            self.gamePlayer.handleEvents(events)
+            return
         for ev in events:
             if ev.type == pygame.KEYDOWN:
                 if ev.key == pygame.K_LEFT:
@@ -48,10 +58,14 @@ class Menu(object):
                         self.gameSelectedIndex = 0
                     else:
                         self.gameSelectedIndex += 1
-                elif ev.key == pygame.K_KP_ENTER:
-                    print("nigg")
+                elif ev.key == pygame.K_RETURN:
+                    
 
     def update(self, dt):
+        if (self.gamePlayer != None):
+            self.gamePlayer.update(dt)
+            return
+
         animationDelta = self.arrowAnimationSpeed * dt
         if self.arrowAnimationIncreasing:
             self.arrowAnimationCurrent += animationDelta
@@ -68,6 +82,10 @@ class Menu(object):
             minigame.updateMiniPreview(dt)
 
     def draw(self, surface):
+        if (self.gamePlayer != None and not self.curtainAnimationIsPlaying):
+            self.gamePlayer.draw(surface)
+            return
+
         surface.blit(self.backgroundImage, (0, 0))
 
         # Header Text
