@@ -1,6 +1,7 @@
 import os
 import pygame
 from random import randint
+import GamePlayer
 
 class Menu(object):
     IMAGE_ARCADE_MACHINE_WIDTH = 160
@@ -23,6 +24,8 @@ class Menu(object):
         pygame.mixer.music.play(-1)
 
         self.minigames = minigames
+        self.gamePlayer = None
+
         self.minigameArcadeMachineImages = []
         for i in range(0, 6):
             self.minigameArcadeMachineImages.append(pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-" + str(i + 1) + ".png"))
@@ -35,7 +38,19 @@ class Menu(object):
         self.arrowAnimationSpeed = 15
         self.gameSelectedIndex = 0
 
+        self.curtainAnimationIsPlaying = False
+        self.curtainAnimationIncreasing = True
+        self.curtainAnimationSpeed = 750
+        self.curtainAnimationMiddleTimeoutDelayCurrent = 0
+        self.curtainAnimationMiddleTimeoutDelay = 0.6
+        self.curtainAnimationCurrent = 0
+
     def handleEvents(self, events):
+        if (self.gamePlayer != None):
+            self.gamePlayer.handleEvents(events)
+            return
+        if (self.curtainAnimationIsPlaying):
+            return
         for ev in events:
             if ev.type == pygame.KEYDOWN:
                 if ev.key == pygame.K_LEFT:
@@ -48,10 +63,13 @@ class Menu(object):
                         self.gameSelectedIndex = 0
                     else:
                         self.gameSelectedIndex += 1
-                elif ev.key == pygame.K_KP_ENTER:
-                    print("nigg")
-
+                elif ev.key == pygame.K_RETURN:
+                    self.curtainAnimationIsPlaying = True
     def update(self, dt):
+        if (self.gamePlayer != None):
+            self.gamePlayer.update(dt)
+            return
+
         animationDelta = self.arrowAnimationSpeed * dt
         if self.arrowAnimationIncreasing:
             self.arrowAnimationCurrent += animationDelta
@@ -67,7 +85,28 @@ class Menu(object):
         for minigame in self.minigames:
             minigame.updateMiniPreview(dt)
 
+        if self.curtainAnimationIsPlaying:
+            if self.curtainAnimationIncreasing:
+                self.curtainAnimationCurrent += self.curtainAnimationSpeed * dt
+                if self.curtainAnimationCurrent > 400:
+                    self.curtainAnimationIncreasing = False
+                    self.curtainAnimationCurrent = 400
+            else:
+                if self.curtainAnimationMiddleTimeoutDelayCurrent < self.curtainAnimationMiddleTimeoutDelay:
+                    self.curtainAnimationMiddleTimeoutDelayCurrent += dt
+                else:
+                    self.curtainAnimationCurrent -= self.curtainAnimationSpeed * dt
+                    if self.curtainAnimationCurrent < 0:
+                        self.curtainAnimationMiddleTimeoutDelayCurrent = 0
+                        self.curtainAnimationIncreasing = True
+                        self.curtainAnimationIsPlaying = False
+                        self.curtainAnimationCurrent = 0
+
     def draw(self, surface):
+        if (self.gamePlayer != None):
+            self.gamePlayer.draw(surface)
+            return
+
         surface.blit(self.backgroundImage, (0, 0))
 
         # Header Text
@@ -105,3 +144,7 @@ class Menu(object):
         # Footer Text
         text = self.footerFont.render("Made by Dennis, Jasper, Gavin, Ties, Vincent and Quinten", True, self.footerColor)
         surface.blit(text, (10, surface.get_height() - 30))
+
+        if (self.curtainAnimationIsPlaying):
+            pygame.draw.rect(surface, (0,0,0), (0,0,self.curtainAnimationCurrent,surface.get_height()))
+            pygame.draw.rect(surface, (0,0,0), (surface.get_width() - self.curtainAnimationCurrent, 0, self.curtainAnimationCurrent,surface.get_height()))
