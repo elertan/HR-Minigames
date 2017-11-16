@@ -3,15 +3,36 @@ import pygame
 from random import randint
 
 class GamePlayer(object):
-    def __init__(self, minigame):
+    def __init__(self, minigame, menu):
+        self.menu = menu
         self.minigame = minigame
+        self.isInPreview = True
+
+        dirname = os.path.dirname(os.path.realpath(__file__))
+
+        self.borderImages = []
+        for i in range(0, 6):
+            self.borderImages.append(pygame.image.load(dirname + "/Shared/Images/game/game-border-" + str(i + 1) + ".png"))
     def handleEvents(self, events):
         for ev in events:
-            pass
+            if ev.type == pygame.KEYDOWN:
+                if ev.key == pygame.K_ESCAPE:
+                    # Go to preview or go to home menu
+                    if self.isInPreview:
+                        self.menu.leaveGame()
+                    else:
+                        self.minigame.leave()
+                        self.isInPreview = True
         self.minigame.handleEvents(events)
     def update(self, dt):
+        if self.isInPreview:
+            self.minigame.updatePreview(dt)
+            return
         self.minigame.update(dt)
     def draw(self, surface):
-        s = surface.subsurface((20, 20, surface.get_width() - 40, surface.get_height() - 40))
-        pygame.draw.rect(s, (0, 255, 0), (0,0,500,500))
-        self.minigame.draw(s)
+        s = surface.subsurface((5, 5, surface.get_width() - 10, surface.get_height() - 10))
+        if self.isInPreview:
+            self.minigame.drawPreview(s)
+        else:
+            self.minigame.draw(s)
+        surface.blit(self.borderImages[self.minigame.identifier], (0,0))

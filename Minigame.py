@@ -1,11 +1,18 @@
 import pygame
+import os
 
 class Minigame(object):
     name=""
     author=""
-    def __init__(self, name, author):
+    identifier = 0
+    def __init__(self, name, author, identifier):
         self.name = name
         self.author = author
+        self.identifier = identifier
+
+        dirname = os.path.dirname(os.path.realpath(__file__))
+
+        self.font16 = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 16)
 
     # When a player starts this minigame
     def enter(self):
@@ -24,7 +31,7 @@ class Minigame(object):
 
     # Gets called on every frame
     def updatePreview(self, dt):
-        raise NotImplementedError("You need to override the updatePreview method on your minigame.")
+        pass
 
     def updateMiniPreview(self, dt):
         pass
@@ -34,7 +41,9 @@ class Minigame(object):
         raise NotImplementedError("You need to override the draw method on your minigame.")
 
     def drawPreview(self, surface):
-        raise NotImplementedError("You need to override the drawPreview method on your minigame.")
+        pygame.draw.rect(surface, (0, 0, 230), (0,0,surface.get_width(), surface.get_height()))
+        text = self.font16.render(str(surface.get_width()) + "px by " + str(surface.get_height()) + "px", True, (255, 255, 255))
+        surface.blit(text, (surface.get_width() / 2 - 60, surface.get_height() / 2 - 20))
 
     def drawMiniPreview(self, surface):
         pygame.draw.rect(surface, (0, 0, 255), (0, 0, surface.get_width(), surface.get_height()))

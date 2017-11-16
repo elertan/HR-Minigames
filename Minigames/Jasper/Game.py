@@ -2,7 +2,7 @@ from Minigame import Minigame
 
 class JasperGame(Minigame):
     def __init__(self):
-        super(JasperGame, self).__init__("JasperGame", "Jasper")
+        super(JasperGame, self).__init__("JasperGame", "Jasper", 3)
     
     # When a player starts this minigame
     def enter(self):

@@ -2,7 +2,7 @@ from Minigame import Minigame
 
 class VincentGame(Minigame):
     def __init__(self):
-        super(VincentGame, self).__init__("VincentGame", "Vincent")
+        super(VincentGame, self).__init__("VincentGame", "Vincent", 6)
     
     # When a player starts this minigame
     def enter(self):

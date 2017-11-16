@@ -74,7 +74,7 @@ class Menu(object):
                     self.curtainAnimationCurrent = 400
             else:
                 if self.gamePlayer is None:
-                    self.gamePlayer = GamePlayer(self.minigames[self.gameSelectedIndex])
+                    self.gamePlayer = GamePlayer(self.minigames[self.gameSelectedIndex], self)
                 if self.curtainAnimationMiddleTimeoutDelayCurrent < self.curtainAnimationMiddleTimeoutDelay:
                     self.curtainAnimationMiddleTimeoutDelayCurrent += dt
                 else:
@@ -108,6 +108,9 @@ class Menu(object):
     def draw(self, surface):
         if (self.gamePlayer != None):
             self.gamePlayer.draw(surface)
+            if (self.curtainAnimationIsPlaying):
+                pygame.draw.rect(surface, (0,0,0), (0,0,self.curtainAnimationCurrent,surface.get_height()))
+                pygame.draw.rect(surface, (0,0,0), (surface.get_width() - self.curtainAnimationCurrent, 0, self.curtainAnimationCurrent,surface.get_height()))
             return
 
         surface.blit(self.backgroundImage, (0, 0))
@@ -151,3 +154,6 @@ class Menu(object):
         if (self.curtainAnimationIsPlaying):
             pygame.draw.rect(surface, (0,0,0), (0,0,self.curtainAnimationCurrent,surface.get_height()))
             pygame.draw.rect(surface, (0,0,0), (surface.get_width() - self.curtainAnimationCurrent, 0, self.curtainAnimationCurrent,surface.get_height()))
+
+    def leaveGame(self):
+        self.gamePlayer = None

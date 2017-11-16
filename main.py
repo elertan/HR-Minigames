@@ -31,25 +31,19 @@ class Game(object):
     def handleEvents(self):
         events = []
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.keepRunning = False
+                return
             events.append(event)
-        if (self.currentMinigame is None):
-            # Update Menu
-            self.menu.handleEvents(events)
-        else:
-            self.currentMinigame.handleEvents(events)
+        # Update Menu
+        self.menu.handleEvents(events)
 
     def update(self, dt):
-        if (self.currentMinigame is None):
-            # Update Menu
-            self.menu.update(dt)
-        else:
-            self.currentMinigame.update(dt)
+        # Update Menu
+        self.menu.update(dt)
     def draw(self):
-        if (self.currentMinigame is None):
-            # Draw Menu
-            self.menu.draw(self.surface)
-        else:
-            self.minigame.draw(self.surface)
+        # Draw Menu
+        self.menu.draw(self.surface)
     def run(self):
         getTicksLastFrame = 0
         deltaTime = 16
