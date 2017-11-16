@@ -13,7 +13,7 @@ class DennisGame(Minigame):
         self.previewPressToStartBlinkAnimationCurrent = 0
         self.previewPressToStartBlinkAnimationIsVisible = True
 
-        self.miniPreviewMainFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 13)
+        self.miniPreviewMainFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 11)
         self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
         self.miniPreviewSnakeOffsetIncrementDelay = 1
         self.miniPreviewSnakeOffset = 0
