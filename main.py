@@ -40,6 +40,8 @@ class Game(object):
 
     def update(self, dt):
         # Update Menu
+        fps = 1.0 / dt
+        print(fps)
         self.menu.update(dt)
     def draw(self):
         # Draw Menu

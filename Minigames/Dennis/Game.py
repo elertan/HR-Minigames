@@ -9,9 +9,9 @@ class DennisGame(Minigame):
 
         self.largeFont = pygame.font.Font(dirname + "/../../Shared/Fonts/norton.ttf", 60)
 
-        self.previewPressToStartBlinkAnimationDelay = 0.5
+        self.previewPressToStartBlinkAnimationDelay = 2
         self.previewPressToStartBlinkAnimationCurrent = 0
-        self.previewPressToStartBlinkAnimationIsVisible = True
+        self.previewPressToStartBlinkAnimationIsVisible = False
 
         self.miniPreviewMainFont = pygame.font.Font(dirname + "/../../Shared/Fonts/SanFrancisco.otf", 11)
         self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
@@ -35,7 +35,6 @@ class DennisGame(Minigame):
 
     # Gets called on every frame
     def updatePreview(self, dt):
-        dt = 0.1
         self.previewPressToStartBlinkAnimationCurrent += dt
         if self.previewPressToStartBlinkAnimationCurrent > self.previewPressToStartBlinkAnimationDelay:
             self.previewPressToStartBlinkAnimationIsVisible = not self.previewPressToStartBlinkAnimationIsVisible
@@ -62,7 +61,7 @@ class DennisGame(Minigame):
         surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, 80))
 
         if self.previewPressToStartBlinkAnimationIsVisible:
-            text = self.largeFont.render("Press Enter To Start", True, (255,255,255))
+            text = self.largeFont.render("Press Enter To Start" + str(self.previewPressToStartBlinkAnimationCurrent), True, (255,255,255))
             surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, surface.get_height() - 100))
 
     # def drawPreview(self, surface):

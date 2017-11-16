@@ -36,3 +36,4 @@ class GamePlayer(object):
         else:
             self.minigame.draw(s)
         surface.blit(self.borderImages[self.minigame.identifier], (0,0))
+        self.minigame.endFrame()

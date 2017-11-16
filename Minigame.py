@@ -47,3 +47,6 @@ class Minigame(object):
 
     def drawMiniPreview(self, surface):
         pygame.draw.rect(surface, (0, 0, 255), (0, 0, surface.get_width(), surface.get_height()))
+
+    def endFrame(self):
+        pass
