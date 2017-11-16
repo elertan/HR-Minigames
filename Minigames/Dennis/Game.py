@@ -8,10 +8,11 @@ class DennisGame(Minigame):
         dirname = os.path.dirname(os.path.realpath(__file__))
 
         self.largeFont = pygame.font.Font(dirname + "/../../Shared/Fonts/norton.ttf", 60)
+        self.normalFont = pygame.font.Font(dirname + "/../../Shared/Fonts/norton.ttf", 40)
 
-        self.previewPressToStartBlinkAnimationDelay = 2
+        self.previewPressToStartBlinkAnimationDelay = 0.75
         self.previewPressToStartBlinkAnimationCurrent = 0
-        self.previewPressToStartBlinkAnimationIsVisible = False
+        self.previewPressToStartBlinkAnimationIsVisible = True
 
         self.miniPreviewMainFont = pygame.font.Font(dirname + "/../../Shared/Fonts/SanFrancisco.otf", 11)
         self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
@@ -54,6 +55,8 @@ class DennisGame(Minigame):
         pass
     
     def drawPreview(self, surface):
+        surface.fill((0,0,0))
+
         text = self.largeFont.render("SuperSnake", True, (255,255,255))
         surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, 40))
 
@@ -61,7 +64,7 @@ class DennisGame(Minigame):
         surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, 80))
 
         if self.previewPressToStartBlinkAnimationIsVisible:
-            text = self.largeFont.render("Press Enter To Start" + str(self.previewPressToStartBlinkAnimationCurrent), True, (255,255,255))
+            text = self.normalFont.render("Press Enter To Start", True, (255,255,255))
             surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, surface.get_height() - 100))
 
     # def drawPreview(self, surface):
