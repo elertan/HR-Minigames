@@ -13,14 +13,15 @@ class Menu(object):
         self.minigameTextColor = (255,255,255)
         self.minigameTextActiveColor = (255,0,0)
 
-        dirname = os.path.dirname(os.path.realpath(__file__))
-        self.backgroundImage = pygame.image.load(dirname + "/Shared/Images/menu/background.jpg")
-        self.headerFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 21)
-        self.mainFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 20)
-        self.minigameFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 18)
-        self.footerFont = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 16)
+        self.dirname = os.path.dirname(os.path.realpath(__file__))
 
-        pygame.mixer.music.load(dirname + "/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg")
+        self.backgroundImage = pygame.image.load(self.getFilePath("/Shared/Images/menu/background.jpg"))
+        self.headerFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 21)
+        self.mainFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 20)
+        self.minigameFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 18)
+        self.footerFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 16)
+
+        pygame.mixer.music.load(self.getFilePath("/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg"))
         pygame.mixer.music.play(-1)
 
         self.minigames = minigames
@@ -28,9 +29,9 @@ class Menu(object):
 
         self.minigameArcadeMachineImages = []
         for i in range(0, 6):
-            self.minigameArcadeMachineImages.append(pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-" + str(i + 1) + ".png"))
-        self.minigameArcadeMachineGlowImage = pygame.image.load(dirname + "/Shared/Images/menu/arcade-machine-glow.png")
-        self.minigameArcadeMachineActiveArrow = pygame.image.load(dirname + "/Shared/Images/menu/arrow.png")
+            self.minigameArcadeMachineImages.append(pygame.image.load(self.getFilePath("/Shared/Images/menu/arcade-machine-" + str(i + 1) + ".png")))
+        self.minigameArcadeMachineGlowImage = pygame.image.load(self.getFilePath("/Shared/Images/menu/arcade-machine-glow.png"))
+        self.minigameArcadeMachineActiveArrow = pygame.image.load(self.getFilePath("/Shared/Images/menu/arrow.png"))
 
         self.arrowAnimationIncreasing = True
         self.arrowAnimationCurrent = 0
@@ -44,6 +45,9 @@ class Menu(object):
         self.curtainAnimationMiddleTimeoutDelayCurrent = 0
         self.curtainAnimationMiddleTimeoutDelay = 0.6
         self.curtainAnimationCurrent = 0
+
+    def getFilePath(self, relativePath):
+        return self.dirname + relativePath
 
     def handleEvents(self, events):
         if (self.gamePlayer != None):
@@ -64,6 +68,7 @@ class Menu(object):
                     else:
                         self.gameSelectedIndex += 1
                 elif ev.key == pygame.K_RETURN:
+                    pygame.mixer.music.stop()
                     self.curtainAnimationIsPlaying = True
     def update(self, dt):
         if self.curtainAnimationIsPlaying:
@@ -157,3 +162,5 @@ class Menu(object):
 
     def leaveGame(self):
         self.gamePlayer = None
+        pygame.mixer.music.load(self.getFilePath("/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg"))
+        pygame.mixer.music.play(-1)

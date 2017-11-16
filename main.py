@@ -45,6 +45,7 @@ class Game(object):
         self.menu.update(dt)
     def draw(self):
         # Draw Menu
+        self.surface.fill((0,0,0))
         self.menu.draw(self.surface)
     def run(self):
         getTicksLastFrame = 0

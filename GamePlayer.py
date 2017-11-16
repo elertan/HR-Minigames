@@ -13,6 +13,8 @@ class GamePlayer(object):
         self.borderImages = []
         for i in range(0, 6):
             self.borderImages.append(pygame.image.load(dirname + "/Shared/Images/game/game-border-" + str(i + 1) + ".png"))
+
+        self.minigame.previewShown()
     def handleEvents(self, events):
         for ev in events:
             if ev.type == pygame.KEYDOWN:
@@ -23,7 +25,12 @@ class GamePlayer(object):
                     else:
                         self.minigame.leave()
                         self.isInPreview = True
-        self.minigame.handleEvents(events)
+                elif ev.key == pygame.K_RETURN and self.isInPreview:
+                    self.isInPreview = False
+                    pygame.mixer.music.stop()
+                    self.minigame.enter()
+        if not self.isInPreview:
+            self.minigame.handleEvents(events)
     def update(self, dt):
         if self.isInPreview:
             self.minigame.updatePreview(dt)

@@ -10,9 +10,12 @@ class Minigame(object):
         self.author = author
         self.identifier = identifier
 
-        dirname = os.path.dirname(os.path.realpath(__file__))
+        self.dirname = os.path.dirname(os.path.realpath(__file__))
 
-        self.font16 = pygame.font.Font(dirname + "/Shared/Fonts/SanFrancisco.otf", 16)
+        self.font16 = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 16)
+
+    def getFilePath(self, relativePath):
+        return self.dirname + relativePath
 
     # When a player starts this minigame
     def enter(self):
@@ -49,4 +52,7 @@ class Minigame(object):
         pygame.draw.rect(surface, (0, 0, 255), (0, 0, surface.get_width(), surface.get_height()))
 
     def endFrame(self):
+        pass
+
+    def previewShown(self):
         pass

@@ -5,27 +5,30 @@ import os
 class DennisGame(Minigame):
     def __init__(self):
         super(DennisGame, self).__init__("SuperSnake", "Dennis", 1)
-        dirname = os.path.dirname(os.path.realpath(__file__))
 
-        self.largeFont = pygame.font.Font(dirname + "/../../Shared/Fonts/norton.ttf", 60)
-        self.normalFont = pygame.font.Font(dirname + "/../../Shared/Fonts/norton.ttf", 40)
+        self.largeFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 60)
+        self.normalFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 40)
 
         self.previewPressToStartBlinkAnimationDelay = 0.75
         self.previewPressToStartBlinkAnimationCurrent = 0
         self.previewPressToStartBlinkAnimationIsVisible = True
 
-        self.miniPreviewMainFont = pygame.font.Font(dirname + "/../../Shared/Fonts/SanFrancisco.otf", 11)
+        self.miniPreviewMainFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 13)
         self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
         self.miniPreviewSnakeOffsetIncrementDelay = 1
         self.miniPreviewSnakeOffset = 0
     
+    def previewShown(self):
+        pygame.mixer.music.load(self.getFilePath("/Shared/Music/dennis/background.ogg"))
+        pygame.mixer.music.play(-1)
+
     # When a player starts this minigame
     def enter(self):
-        raise NotImplementedError("You need to override the enter method on your minigame.")
+        pass
 
     # When a player leaves this minigame
     def leave(self):
-        raise NotImplementedError("You need to override the leave method on your minigame.")
+        pass
 
     def handleEvents(self, events):
         pass
@@ -55,8 +58,6 @@ class DennisGame(Minigame):
         pass
     
     def drawPreview(self, surface):
-        surface.fill((0,0,0))
-
         text = self.largeFont.render("SuperSnake", True, (255,255,255))
         surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, 40))
 
