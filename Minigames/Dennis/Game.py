@@ -1,6 +1,8 @@
 from Minigame import Minigame
 import pygame
 import os
+import math
+from random import randint
 
 class DennisGame(Minigame):
     def __init__(self):
@@ -17,6 +19,19 @@ class DennisGame(Minigame):
         self.miniPreviewSnakeOffsetIncrementDelayCurrent = 0
         self.miniPreviewSnakeOffsetIncrementDelay = 1
         self.miniPreviewSnakeOffset = 0
+
+        self.mapWidth = 20
+        self.mapHeight = 12
+        self.blockPadding = 2
+
+        self.collectableBlockColor = (230, 230, 230)
+        self.snakeBlockColor = (0, 255, 0)
+
+        self.startGameCountdownCurrent = 0
+        self.startGameCountdown = 3
+        self.snakeTailPositions = []
+        self.snakeBaseTailLength = 3
+        self.snakeCollectablePosition = (randint(0, self.mapWidth), randint(0, self.mapHeight))
     
     def previewShown(self):
         pygame.mixer.music.load(self.getFilePath("/Shared/Music/dennis/background.ogg"))
@@ -24,7 +39,15 @@ class DennisGame(Minigame):
 
     # When a player starts this minigame
     def enter(self):
-        pass
+        self.startGameCountdownCurrent = 0
+        self.snakeTailPositions = []
+        startX = math.floor(self.mapWidth / 2)
+        startY = math.floor(self.mapHeight / 2)
+        for x in range(0, self.snakeBaseTailLength + 1):
+            posX = startX - x
+            if posX < 0:
+                posX = self.mapWidth + posX
+            self.snakeTailPositions.append((posX, startY))
 
     # When a player leaves this minigame
     def leave(self):
@@ -35,7 +58,9 @@ class DennisGame(Minigame):
 
     # Gets called on every frame
     def update(self, dt):
-        pass
+        if self.startGameCountdownCurrent < self.startGameCountdown:
+            self.startGameCountdownCurrent += dt
+            return
 
     # Gets called on every frame
     def updatePreview(self, dt):
@@ -55,7 +80,25 @@ class DennisGame(Minigame):
 
     # Draw the current game state
     def draw(self, surface):
-        pass
+        snakeSurface = surface.subsurface((20, 20, surface.get_width() - 40, surface.get_height() - 100))
+        snakeSurface.fill((255,255,255))
+
+        blockWidth = snakeSurface.get_width() / self.mapWidth - self.blockPadding
+        blockHeight = snakeSurface.get_height() / self.mapHeight - self.blockPadding
+
+        for y in range(0, self.mapHeight):
+            for x in range(0, self.mapWidth):
+                pygame.draw.rect(snakeSurface, 
+                    (0,0,0), 
+                    ((blockWidth + self.blockPadding) * x + self.blockPadding, 
+                        (blockHeight + self.blockPadding) * y + self.blockPadding,
+                        blockWidth + self.blockPadding / 2,
+                        blockHeight + self.blockPadding / 2))
+
+        if self.startGameCountdownCurrent < self.startGameCountdown:
+            countdown = math.ceil(self.startGameCountdown - self.startGameCountdownCurrent)
+            text = self.normalFont.render("Starting in " + str(countdown), True, (255,255,255))
+            surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, surface.get_height() - 60))
     
     def drawPreview(self, surface):
         text = self.largeFont.render("SuperSnake", True, (255,255,255))
