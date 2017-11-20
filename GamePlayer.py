@@ -27,7 +27,7 @@ class GamePlayer(object):
                         self.isInPreview = True
                 elif ev.key == pygame.K_RETURN and self.isInPreview:
                     self.isInPreview = False
-                    pygame.mixer.music.stop()
+                    # pygame.mixer.music.stop()
                     self.minigame.enter()
         if not self.isInPreview:
             self.minigame.handleEvents(events)
