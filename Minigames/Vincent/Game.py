@@ -36,3 +36,7 @@ class VincentGame(Minigame):
     def drawPreview(self, surface):
         x=5
         raise NotImplementedError("You need to override the drawPreview method on your minigame.")
+
+    def drawMiniPreview(self, surface):        
+        text = self.miniPreviewMainFont.render("SpaceInvaders", True, (255, 255, 255))
+        surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, 5)) 
