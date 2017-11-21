@@ -28,4 +28,5 @@ class VincentGame(Minigame):
         raise NotImplementedError("You need to override the draw method on your minigame.")
 
     def drawPreview(self, surface):
+        x=10
         raise NotImplementedError("You need to override the drawPreview method on your minigame.")
