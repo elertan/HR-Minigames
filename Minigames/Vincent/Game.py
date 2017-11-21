@@ -1,8 +1,11 @@
 from Minigame import Minigame
+import pygame
 
 class VincentGame(Minigame):
     def __init__(self):
         super(VincentGame, self).__init__("VincentGame", "Vincent", 6)
+
+        self.miniPreviewMainFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 11)
     
     # When a player starts this minigame
     def enter(self):
@@ -22,6 +25,9 @@ class VincentGame(Minigame):
     # Gets called on every frame
     def updatePreview(self, dt):
         raise NotImplementedError("You need to override the updatePreview method on your minigame.")
+
+    def updateMiniPreview(self, dt):
+        pass
 
     # Draw the current game state
     def draw(self, surface):
