@@ -1,8 +1,11 @@
 from Minigame import Minigame
+import pygame
 
 class VincentGame(Minigame):
     def __init__(self):
         super(VincentGame, self).__init__("VincentGame", "Vincent", 6)
+
+        self.miniPreviewMainFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 11)
     
     # When a player starts this minigame
     def enter(self):
@@ -23,14 +26,17 @@ class VincentGame(Minigame):
     def updatePreview(self, dt):
         raise NotImplementedError("You need to override the updatePreview method on your minigame.")
 
+    def updateMiniPreview(self, dt):
+        pass
+
     # Draw the current game state
     def draw(self, surface):
         raise NotImplementedError("You need to override the draw method on your minigame.")
 
     def drawPreview(self, surface):
-<<<<<<< HEAD
         x=5
-=======
-        x=20
->>>>>>> aed9ca7b57b372948ff310d66cf292b270c154f0
         raise NotImplementedError("You need to override the drawPreview method on your minigame.")
+
+    def drawMiniPreview(self, surface):        
+        text = self.miniPreviewMainFont.render("SpaceInvaders", True, (255, 255, 255))
+        surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, 5))
