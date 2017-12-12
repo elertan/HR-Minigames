@@ -37,7 +37,9 @@ class GamePlayer(object):
             return
         self.minigame.update(dt)
     def draw(self, surface):
-        s = surface.subsurface((5, 5, surface.get_width() - 10, surface.get_height() - 10))
+        s = surface
+        if not self.minigame.gameRequiresFullscreen:
+            s = surface.subsurface((5, 5, surface.get_width() - 10, surface.get_height() - 10))
         if self.isInPreview:
             self.minigame.drawPreview(s)
         else:

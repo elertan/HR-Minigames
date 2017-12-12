@@ -11,11 +11,12 @@ class DennisGame(Minigame):
     SNAKE_DIRECTION_RIGHT = 3
 
     def __init__(self):
-        super(DennisGame, self).__init__("SuperSnake", "Dennis", 1)
+        super(DennisGame, self).__init__("SuperSnake", "Dennis", 0)
 
         self.gameOverFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 80)
         self.largeFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 60)
         self.normalFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/neon-pixel.ttf"), 40)
+        self.answersFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 26)
 
         self.previewPressToStartBlinkAnimationDelay = 0.75
         self.previewPressToStartBlinkAnimationCurrent = 0
@@ -30,7 +31,8 @@ class DennisGame(Minigame):
         self.mapHeight = 12
         self.blockPadding = 2
 
-        self.collectableBlockColor = (255, 0, 0)
+        self.rightCollectableBlockColor = (255, 0, 0)
+        self.wrongCollectableBlockColor = (0, 0, 255)
         self.snakeBlockColor = (0, 255, 0)
         self.snakeHeadBlockColor = (19, 173, 19)
 
@@ -51,11 +53,51 @@ class DennisGame(Minigame):
 
         self.snakeTailPositions = []
         self.snakeBaseTailLength = 3
-        self.snakeCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+        self.snakeRightCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+        self.snakeWrongCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+        self.questionIsSwappedAround = False
+
+        self.currentRightAnswer = ""
+        self.currentWrongAnswer = ""
+
+    def answerToString(self, answer):
+        return answer[0] + str(answer[1])
+
+    def getRightAnswer(self):
+        option = randint(0, 3)
+        firstNum = randint(1, 10)
+        secondNum = randint(1, 10)
+        if option == 0:
+            result = firstNum + secondNum
+            return (str(firstNum) + " + " + str(secondNum) + " = ", result)
+        elif option == 1:
+            result = firstNum - secondNum
+            return (str(firstNum) + " - " + str(secondNum) + " = ", result)
+        elif option == 2:
+            result = firstNum * secondNum
+            return (str(firstNum) + " * " + str(secondNum) + " = ", result)
+        elif option == 3:
+            result = round(firstNum / secondNum, 3)
+            return (str(firstNum) + " / " + str(secondNum) + " = ", result)
+
+    def getWrongAnswer(self):
+        offset = randint(-5, 5)
+        while offset == 0:
+            offset = randint(-5, 5)
+        rightAnswer = self.getRightAnswer()
+        return (rightAnswer[0], rightAnswer[1] + offset)
+
+    def generateNewAnswers(self):
+        right = self.getRightAnswer()
+        wrong = self.getWrongAnswer()
+        self.currentRightAnswer = self.answerToString(right)
+        self.currentWrongAnswer = self.answerToString(wrong)
+        self.questionIsSwappedAround = bool(randint(0, 1))
 
     def restartGame(self):
         self.points = 0
-        self.snakeCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+        self.snakeRightCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+        self.snakeWrongCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
         self.snakeSpeed = 7500
         self.snakeCurrentDelay = 0
         self.snakeDelayTime = 1
@@ -77,13 +119,23 @@ class DennisGame(Minigame):
                 posX = self.mapWidth + posX
             self.snakeTailPositions.append((posX, startY))
 
+        self.generateNewAnswers()
+
     def snakeCheckCollectible(self):
         currentPos = self.snakeTailPositions[0]
-        collectibleX = self.snakeCollectablePosition[0]
-        collectibleY = self.snakeCollectablePosition[1]
+        collectibleX = self.snakeRightCollectablePosition[0]
+        collectibleY = self.snakeRightCollectablePosition[1]
         if currentPos[0] == collectibleX and currentPos[1] == collectibleY:
-            self.snakeCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+            self.snakeRightCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
             self.points += self.pointsPerCollectible
+            self.snakeShouldGrow = True
+
+        wCollectibleX = self.snakeWrongCollectablePosition[0]
+        wCollectibleY = self.snakeWrongCollectablePosition[1]
+        if currentPos[0] == wCollectibleX and currentPos[1] == wCollectibleY:
+            self.snakeWrongCollectablePosition = (randint(0, self.mapWidth - 1), randint(0, self.mapHeight - 1))
+            if self.points != 0:
+                self.points /= 2
             self.snakeShouldGrow = True
 
     def snakeChangeDirection(self, dir):
@@ -187,6 +239,7 @@ class DennisGame(Minigame):
             if not self.snakeShouldGrow:
                 self.snakeTailPositions.pop()
             else:
+                self.generateNewAnswers()
                 self.snakeShouldGrow = False
 
 
@@ -228,9 +281,19 @@ class DennisGame(Minigame):
                     color, 
                     self.getBlockPositionByCoords(snakeSurface, part[0], part[1]))
 
+        c1 = self.rightCollectableBlockColor
+        c2 = self.wrongCollectableBlockColor
+        if self.questionIsSwappedAround:
+            c1 = self.wrongCollectableBlockColor
+            c2 = self.rightCollectableBlockColor
+
         pygame.draw.rect(snakeSurface,
-                    self.collectableBlockColor,
-                    self.getBlockPositionByCoords(snakeSurface, self.snakeCollectablePosition[0], self.snakeCollectablePosition[1]))
+                    c1,
+                    self.getBlockPositionByCoords(snakeSurface, self.snakeRightCollectablePosition[0], self.snakeRightCollectablePosition[1]))
+
+        pygame.draw.rect(snakeSurface,
+                    c2,
+                    self.getBlockPositionByCoords(snakeSurface, self.snakeWrongCollectablePosition[0], self.snakeWrongCollectablePosition[1]))
 
         if self.isGameOver:
             text = self.gameOverFont.render("Game Over", True, (255,255,255))
@@ -247,6 +310,18 @@ class DennisGame(Minigame):
             countdown = math.ceil(self.startGameCountdown - self.startGameCountdownCurrent)
             text = self.normalFont.render("Starting in " + str(countdown), True, (255,255,255))
             surface.blit(text, (surface.get_width() / 2 - text.get_width() / 2, surface.get_height() - 60))
+        else:
+            y = 75
+            y1 = 45
+            if self.questionIsSwappedAround:
+                y = 45
+                y1 = 75
+             
+            rightText = self.answersFont.render(self.currentRightAnswer, True, c1);
+            surface.blit(rightText, (surface.get_width() / 2 - text.get_width() / 2 + 150, surface.get_height() - y))
+
+            wrongText = self.answersFont.render(self.currentWrongAnswer, True, c2);
+            surface.blit(wrongText, (surface.get_width() / 2 - text.get_width() / 2 + 150, surface.get_height() - y1))
     
     def drawPreview(self, surface):
         text = self.largeFont.render("SuperSnake", True, (255,255,255))

@@ -21,8 +21,10 @@ class Menu(object):
         self.minigameFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 18)
         self.footerFont = pygame.font.Font(self.getFilePath("/Shared/Fonts/SanFrancisco.otf"), 16)
 
-        pygame.mixer.music.load(self.getFilePath("/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg"))
-        pygame.mixer.music.play(-1)
+        
+        self.sound = pygame.mixer.Sound(self.getFilePath("/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg"))
+        self.sound.play(-1)
+        self.sound.set_volume(0.1)
 
         self.minigames = minigames
         self.gamePlayer = None
@@ -68,7 +70,7 @@ class Menu(object):
                     else:
                         self.gameSelectedIndex += 1
                 elif ev.key == pygame.K_RETURN:
-                    pygame.mixer.music.stop()
+                    self.sound.stop()
                     self.curtainAnimationIsPlaying = True
     def update(self, dt):
         if self.curtainAnimationIsPlaying:
@@ -162,5 +164,6 @@ class Menu(object):
 
     def leaveGame(self):
         self.gamePlayer = None
-        pygame.mixer.music.load(self.getFilePath("/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg"))
-        pygame.mixer.music.play(-1)
+        #self.sound = pygame.mixer.Sound(self.getFilePath("/Shared/Music/menu/music" + str(randint(1,2)) + ".ogg"))
+        if self.sound.get_num_channels() == 1:
+            self.sound.play(-1)

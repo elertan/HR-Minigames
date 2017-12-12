@@ -5,10 +5,11 @@ class Minigame(object):
     name=""
     author=""
     identifier = 0
-    def __init__(self, name, author, identifier):
+    def __init__(self, name, author, identifier, gameRequiresFullscreen = False):
         self.name = name
         self.author = author
         self.identifier = identifier
+        self.gameRequiresFullscreen = gameRequiresFullscreen
 
         self.dirname = os.path.dirname(os.path.realpath(__file__))
 

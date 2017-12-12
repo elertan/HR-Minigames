@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{e9ef3655-8302-4c4a-9425-d0857b24c707}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>main.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="GamePlayer.py" />
+    <Compile Include="main.py" />
+    <Compile Include="Menu.py" />
+    <Compile Include="Minigame.py" />
+    <Compile Include="Minigames\Dennis\Game.py" />
+    <Compile Include="Minigames\Dennis\__init__.py" />
+    <Compile Include="Minigames\Gavin\Game.py" />
+    <Compile Include="Minigames\Gavin\__init__.py" />
+    <Compile Include="Minigames\Jasper\Game.py" />
+    <Compile Include="Minigames\Jasper\__init__.py" />
+    <Compile Include="Minigames\Quinten\Game.py" />
+    <Compile Include="Minigames\Quinten\__init__.py" />
+    <Compile Include="Minigames\Ties\Game.py" />
+    <Compile Include="Minigames\Ties\__init__.py" />
+    <Compile Include="Minigames\Vincent\Game.py" />
+    <Compile Include="Minigames\Vincent\__init__.py" />
+    <Compile Include="Minigames\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shared\Images\game\game-border-1.png" />
+    <Content Include="Shared\Images\game\game-border-2.png" />
+    <Content Include="Shared\Images\game\game-border-3.png" />
+    <Content Include="Shared\Images\game\game-border-4.png" />
+    <Content Include="Shared\Images\game\game-border-5.png" />
+    <Content Include="Shared\Images\game\game-border-6.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-1 copy.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-1.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-2 copy.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-2.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-3 copy.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-3.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-4 copy.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-4.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-5 copy.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-5.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-6 copy.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-6.png" />
+    <Content Include="Shared\Images\menu\arcade-machine-glow.png" />
+    <Content Include="Shared\Images\menu\arrow.png" />
+    <Content Include="Shared\Images\menu\background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Minigames" />
+    <Folder Include="Minigames\Dennis" />
+    <Folder Include="Minigames\Gavin" />
+    <Folder Include="Minigames\Jasper" />
+    <Folder Include="Minigames\Quinten" />
+    <Folder Include="Minigames\Ties" />
+    <Folder Include="Minigames\Vincent" />
+    <Folder Include="Shared\" />
+    <Folder Include="Shared\Images\" />
+    <Folder Include="Shared\Images\game" />
+    <Folder Include="Shared\Images\menu" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
